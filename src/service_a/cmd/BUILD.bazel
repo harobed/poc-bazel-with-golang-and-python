@@ -1,0 +1,44 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("@io_bazel_rules_docker//go:image.bzl", "go_image")
+load(
+    "@io_bazel_rules_docker//container:container.bzl",
+    "container_image",
+    "container_push",
+)
+
+go_library(
+    name = "go_default_library",
+    srcs = ["main.go"],
+    importpath = "service_a/service_a/cmd",
+    visibility = ["//visibility:private"],
+    deps = ["@com_github_spf13_cobra//:go_default_library"],
+)
+
+go_binary(
+    name = "service_a",
+    embed = [":go_default_library"],
+    visibility = ["//visibility:public"],
+)
+
+go_image(
+    name = "image",
+    srcs = ["main.go"],
+    goarch = "amd64",
+    goos = "linux",
+    pure = "on",
+)
+
+container_image(
+    name = "docker_image",
+    base = ":image",
+    ports = ["5000"],
+)
+
+container_push(
+    name = "push",
+    format = "Docker",
+    image = ":docker_image",
+    registry = "index.docker.io",
+    repository = "harobed/service_a",
+    tag = "develop",
+)
