@@ -2,63 +2,66 @@
 
 One line project overview.
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
-
-- [Rationalize](#rationalize)
-- [Quick demo](#quick-demo)
-  - [Prerequisite](#prerequisite)
-  - [Running demo](#running-demo)
-- [Go further](#go-further)
-- [Contacts](#contacts)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
-
 ## Rationalize
 
-* Explain why do you have created this project.
-* Explain why use your project instead alternative projects.
+* Explain why do you have created this service.
 
 
 ## Quick demo
 
 Lorem ipsum dolor sit amet, posuere vestibulum tempor lectus sed dictum integer, lobortis ipsum nunc et dui aliquam elementum, justo wisi est ac donec. Porttitor tellus, tincidunt porttitor est aliquet, donec libero suspendisse hendrerit.
 
+### Running service_c
 
-### Prerequisites
-
-Lorem ipsum dolor sit amet, posuere vestibulum tempor lectus sed dictum integer, lobortis ipsum nunc et dui aliquam elementum, justo wisi est ac donec.
-
-* [Docker Engine](https://docs.docker.com/engine/) (version `18.06.1-ce`)
-* [Docker Compose](https://docs.docker.com/compose/) (version `1.22.0`)
-* [Virtualbox](https://www.virtualbox.org/) (version `5.2.18r124319`)
-* [Vagrant](https://www.vagrantup.com/) (version `2.1.5`)
-
-On *macOS* you can install prerequisites with [Brew](https://brew.sh/index_fr):
 
 ```sh
-$ brew cask install docker virtualbox vagrant
+$ bazel run //service_c
 ```
 
-
-### Running demo
-
-Lorem ipsum dolor sit amet, posuere vestibulum tempor lectus sed dictum integer, lobortis ipsum nunc et dui aliquam elementum, justo wisi est ac donec. Porttitor tellus, tincidunt porttitor est aliquet, donec libero suspendisse hendrerit.
+### Build service_c
 
 ```sh
-$ make init
-$ make start
+$ bazel build //service_c
 ```
 
-## Go further
+Where is generated `service_c`:
 
-* [How to build MyProject from source](CONTRIBUTE.md#how-to-build-myproject-from-source)
-* [How to execute tests](CONTRIBUTE.md#how-to-execute-tests)
-* [Project directories structure overview](CONTRIBUTE.md#project-directories-structure-overview)
+```
+$ ls ls bazel-bin/service_c/service_c
+bazel-bin/service_c/service_c
+```
 
+### Execute tests
 
-## Contacts
+```sh
+$ bazel test ...
+$ cat ../bazel-testlogs/service_c/tests/test_sample/test.log
+exec ${PAGER:-/usr/bin/less} "$0" || exit 1
+Executing tests from //service_c/tests:test_sample
+-----------------------------------------------------------------------------
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
 
-How to contact creator: Twitter, email or other...
+OK
+42
+```
+
+### Build Docker Image
+
+```sh
+$ bazel build :docker_image
+```
+
+## Display all service_c Bazel targets
+
+```
+$ bazel query 'attr(visibility, "", "//service_c/...")'
+INFO: Invocation ID: 33b84837-9c47-4690-8560-391095162916
+//service_c:push
+//service_c:docker_image
+//service_c:image
+//service_c:image.binary
+//service_c:bin
+Loading: 0 packages loaded
+```
