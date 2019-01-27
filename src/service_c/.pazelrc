@@ -1,0 +1,4 @@
+"""Define pazel extensions for this directory and its subdirectories."""
+HEADER = """package(default_visibility = ["//visibility:public"])
+
+"""
